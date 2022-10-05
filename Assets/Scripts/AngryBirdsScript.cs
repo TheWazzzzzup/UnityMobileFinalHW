@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class AngryBirdsScript : MonoBehaviour
 {
+    public bool PlayerLifeCycle;
+
     [SerializeField] float _maxDistance;
     [SerializeField] float _forceFactor = 250;
-    [SerializeField] int premitedAttempts = 3;
+    [SerializeField] GameManager gameManager;
+
+    private Rigidbody2D rigid2d;
 
     private Vector3 _offset;
     private Vector3 _birdOrigin;
+    
     private Quaternion _birdOriginalRotation;
-    private Rigidbody2D rigid2d;
-    private bool isPlayerLunched = false;
 
-    private void Start()
+    private void Awake()
     {
+        PlayerLifeCycle = false;
         rigid2d = GetComponent<Rigidbody2D>();
-    }
-
-    public bool IsPlayerLunched()
-    {
-        return isPlayerLunched;
     }
 
     private void OnMouseDown()
@@ -61,35 +60,31 @@ public class AngryBirdsScript : MonoBehaviour
         GetComponent<Rigidbody2D>().gravityScale = 1;
         Vector3 drageVector = transform.position - _birdOrigin;
         GetComponent<Rigidbody2D>().AddForce(new Vector2(-drageVector.x * _forceFactor, -drageVector.y * _forceFactor));
-        StartCoroutine(Lunched());
+        StartCoroutine(gameManager.Lunched());
     }
 
-    IEnumerator Lunched()
+    private void OnEnable()
     {
-        isPlayerLunched = true;
-        yield return new WaitForSeconds(4);
-        isPlayerLunched = false;
-
-        ResetPlayer();
+        PlayerLifeCycle = true;
+        gameObject.transform.position = _birdOrigin;
+        gameObject.transform.rotation = _birdOriginalRotation;
+        rigid2d.velocity = new Vector2(0, 0);
+        rigid2d.freezeRotation = true;
+        rigid2d.gravityScale = 0;
+        rigid2d.freezeRotation = false;
     }
 
-    void ResetPlayer()
+    private void OnDisable()
     {
-        if (premitedAttempts >= 0)
+        PlayerLifeCycle = false;
+    }
+
+    public void InitGameManager(GameManager gameManager)
+    {
+        if (gameManager != null)
         {
-            gameObject.transform.position = _birdOrigin;
-            gameObject.transform.rotation = _birdOriginalRotation;
-            GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
-            GetComponent<Rigidbody2D>().freezeRotation = true;
-            GetComponent<Rigidbody2D>().gravityScale = 0;
-            GetComponent<Rigidbody2D>().freezeRotation = false;
-            premitedAttempts--;
+            this.gameManager = gameManager;
         }
     }
 
-    [ContextMenu("GetScore")]
-    void GetScore()
-    {
-        ScoreCounter.GetOverallScore();
-    }
 }

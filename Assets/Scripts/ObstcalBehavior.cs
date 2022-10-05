@@ -8,7 +8,7 @@ public class ObstcalBehavior : MonoBehaviour
 {
     public UnityEvent AddScore;
 
-    [SerializeField] AngryBirdsScript playerScript;
+    [SerializeField] GameManager gameManager;
     [SerializeField] TextMeshProUGUI textMeshProUGUI;
     [SerializeField] float changeInVecotr = 1;
 
@@ -30,7 +30,7 @@ public class ObstcalBehavior : MonoBehaviour
 
     private void Update()
     {
-        playerLunched = playerScript.IsPlayerLunched();
+        playerLunched = gameManager.CurrentPlayerLaunched();
 
         if (playerLunched == true)
         {
