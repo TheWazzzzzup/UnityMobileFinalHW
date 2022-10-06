@@ -9,9 +9,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameEvents gameEvents;
 
-    [SerializeField] GameObject currentPlayer;
     [SerializeField] List<GameObject> listOfPlayers;
     [SerializeField] List<GameObject> thisRoundCharactes;
+
+    private GameObject currentPlayer;
 
     private AngryBirdsScript angrybirdscripts;
 
@@ -80,7 +81,14 @@ public class GameManager : MonoBehaviour
             this.currentPlayer.transform.position = playerSpawnPos.position;
             this.currentPlayer.SetActive(true);
         }
-        else { gameOver = true; gameEvents.GameOverEvent.Invoke(); }
+        else { RoundCheck(); }
+    }
+
+    void RoundCheck()
+    {
+        // if statement that checks if the player destroied all obstacles by min score: current level (obstcale = 5, min score = 200) minimum req is 1000 points to clear to next level
+        // then invoke either gameover or congrats and move to next level!
+        gameEvents.GameOverEvent.Invoke();
     }
 
     [ContextMenu("GetScore")]

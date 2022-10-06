@@ -7,6 +7,9 @@ public static class ScoreCounter
 {
     static int score = 0;
 
+    static int rngLowScore = 350;
+    static int rngHighScore = 451;
+
     public static void GetOverallScore()
     {
         Debug.Log(score);
@@ -14,7 +17,7 @@ public static class ScoreCounter
 
     public static int GetRandomScore()
     {
-        return Random.Range(350, 450);
+        return Random.Range(rngLowScore, rngHighScore);
     }
 
     public static void AddScore(int scoreValue)
