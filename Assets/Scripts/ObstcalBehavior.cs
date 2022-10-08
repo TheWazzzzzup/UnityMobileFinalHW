@@ -14,7 +14,7 @@ public class ObstcalBehavior : MonoBehaviour
 
     private Vector3 startVec3;
 
-    private string playerTag;
+    private string playerTag = "Player";
     
     private bool playerLunched;
     private bool aboutToDestroy;
@@ -77,6 +77,6 @@ public class ObstcalBehavior : MonoBehaviour
 
     private void CoroutineTriger()
     {
-        StartCoroutine(DestorySelfOnDelay(5));
+        StartCoroutine(DestorySelfOnDelay(3));
     }
 }

@@ -7,12 +7,18 @@ public static class ScoreCounter
 {
     static int score = 0;
 
-    static int rngLowScore = 350;
-    static int rngHighScore = 451;
+    public static int RoundsWon = 0;
+    public static int rngLowScore = 350;
+    public static int rngHighScore = 451;
 
-    public static void GetOverallScore()
+    public static void ResetCounter()
     {
-        Debug.Log(score);
+        score = 0;
+    }
+
+    public static int GetOverallScore()
+    {
+        return score;
     }
 
     public static int GetRandomScore()

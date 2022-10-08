@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        ScoreCounter.ResetCounter();
         PickPlayers(roundAttempts);
         currentPlayerLaunched = false;
         gameOver = false;
@@ -81,14 +82,17 @@ public class GameManager : MonoBehaviour
             this.currentPlayer.transform.position = playerSpawnPos.position;
             this.currentPlayer.SetActive(true);
         }
-        else { RoundCheck(); }
+        else { StartCoroutine(RoundCheck()); }
     }
 
-    void RoundCheck()
+    IEnumerator RoundCheck()
     {
-        // if statement that checks if the player destroied all obstacles by min score: current level (obstcale = 5, min score = 200) minimum req is 1000 points to clear to next level
-        // then invoke either gameover or congrats and move to next level!
-        gameEvents.GameOverEvent.Invoke();
+        yield return new WaitForSeconds(2);
+        if (ScoreCounter.GetOverallScore() >= (ScoreCounter.rngLowScore * gameEvents.obstclesInLevel.Count))
+        {
+            gameEvents.RoundWonEvent.Invoke();
+        }
+        else { gameEvents.GameOverEvent.Invoke(); }
     }
 
     [ContextMenu("GetScore")]
